@@ -63,7 +63,7 @@ function App() {
           <p>No past orders.</p>
         ) : (
           <ul>
-            {orderData.orderHistory.map((order: any) => (
+            {orderData?.orderHistory.map((order: any) => (
               <li key={order.id} className="border p-2 rounded mb-2">
                 <p>
                   <strong>Order ID:</strong> {order.id} | <strong>Status:</strong> {order.status} | <strong>Total:</strong> ${order.totalPrice}

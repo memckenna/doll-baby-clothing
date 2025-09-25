@@ -59,7 +59,7 @@ public class MutationResolver {
 
     @MutationMapping
     public Order updateOrderStatus(@Argument String orderId, @Argument String status) {
-        Order order = orderRepo.findById(orderId).orElseThrow();
+        Order order = orderRepo.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Order ID not found: " + orderId));
         order.setStatus(status);
         return orderRepo.save(order);
     }
