@@ -1,0 +1,32 @@
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  imageUrl: String
+}
+
+type CartItem {
+  productId: ID!
+  quantity: Int!
+}
+
+type Order {
+  id: ID!
+  userId: ID!
+  items: [CartItem!]!
+  totalPrice: Float!
+  createdAt: String!
+  status: String!
+}
+
+type Query {
+  products(search: String): [Product!]!
+  orderHistory(userId: ID!): [Order!]!
+}
+
+type Mutation {
+  addToCart(userId: ID!, productId: ID!, quantity: Int!): [CartItem!]!
+  checkout(userId: ID!): Order!
+  updateOrderStatus(orderId: ID!, status: String!): Order!
+}
