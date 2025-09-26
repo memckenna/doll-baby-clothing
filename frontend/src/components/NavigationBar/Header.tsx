@@ -43,10 +43,10 @@ const Header: React.FC = () => {
           Girls
         </Link>
         <Link
-          to="/gender-neutral"
+          to="/gifts"
           style={{ textDecoration: "none", color: "white" }}
         >
-          Gender Neutral
+          Gifts
         </Link>
       </div>
     </div>

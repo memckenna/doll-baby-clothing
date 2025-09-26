@@ -76,8 +76,8 @@ function App() {
           <Route path="/boys" element={<ProductPage category="Boys" />} />
           <Route path="/girls" element={<ProductPage category="Girls" />} />
           <Route
-            path="/gender-neutral"
-            element={<ProductPage category="Gender Neutral" />}
+            path="/gifts"
+            element={<ProductPage category="Gifts" />}
           />
           <Route
             path="/new-arrivals"
