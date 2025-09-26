@@ -18,4 +18,13 @@ public class Product {
     private String description;
     private double price;
     private String imageUrl;
+    private String category; // 👈 new field
+
+    // Getters and setters
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

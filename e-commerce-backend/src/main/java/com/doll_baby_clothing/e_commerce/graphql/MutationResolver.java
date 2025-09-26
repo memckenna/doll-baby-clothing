@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.doll_baby_clothing.e_commerce.model.CartItem;
 import com.doll_baby_clothing.e_commerce.model.Order;
+import com.doll_baby_clothing.e_commerce.model.Product;
 import com.doll_baby_clothing.e_commerce.repository.OrderRepository;
 import com.doll_baby_clothing.e_commerce.repository.ProductRepository;
 
@@ -59,8 +60,63 @@ public class MutationResolver {
 
     @MutationMapping
     public Order updateOrderStatus(@Argument String orderId, @Argument String status) {
-        Order order = orderRepo.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Order ID not found: " + orderId));
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order ID not found: " + orderId));
         order.setStatus(status);
         return orderRepo.save(order);
     }
+
+    @MutationMapping
+    public Product addProduct(
+            @Argument String name,
+            @Argument String description,
+            @Argument double price,
+            @Argument String imageUrl,
+            @Argument String category) {
+
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setImageUrl(imageUrl);
+        product.setCategory(category);
+
+        return productRepo.save(product);
+    }
+
+    @MutationMapping
+    public Product updateProduct(
+            @Argument String id,
+            @Argument String name,
+            @Argument String description,
+            @Argument Double price,
+            @Argument String imageUrl,
+            @Argument String category) {
+
+        Product product = productRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found: " + id));
+
+        if (name != null)
+            product.setName(name);
+        if (description != null)
+            product.setDescription(description);
+        if (price != null)
+            product.setPrice(price);
+        if (imageUrl != null)
+            product.setImageUrl(imageUrl);
+        if (category != null)
+            product.setCategory(category);
+
+        return productRepo.save(product);
+    }
+
+    @MutationMapping
+    public Boolean deleteProduct(@Argument String id) {
+        if (!productRepo.existsById(id)) {
+            throw new IllegalArgumentException("Product not found: " + id);
+        }
+        productRepo.deleteById(id);
+        return true;
+    }
+
 }

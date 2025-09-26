@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_PRODUCTS,
@@ -6,19 +7,28 @@ import {
   CHECKOUT,
   GET_ORDER_HISTORY,
 } from "./graphql";
+import ProductPage from "../src/components/ProductPage";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
+import Header from "./components/NavigationBar/Header";
 
 const USER_ID = "user123";
 
 function App() {
-  const { data: productData, loading: productLoading, error: productError } = useQuery(GET_PRODUCTS, {
+  const {
+    data: productData,
+    loading: productLoading,
+    error: productError,
+  } = useQuery(GET_PRODUCTS, {
     variables: { search: "" },
   });
 
-  const { data: orderData, refetch: refetchOrders } = useQuery(GET_ORDER_HISTORY, {
-    variables: { userId: USER_ID },
-  });
+  const { data: orderData, refetch: refetchOrders } = useQuery(
+    GET_ORDER_HISTORY,
+    {
+      variables: { userId: USER_ID },
+    }
+  );
 
   const [addToCartMutation] = useMutation(ADD_TO_CART);
   const [checkoutMutation] = useMutation(CHECKOUT);
@@ -27,16 +37,23 @@ function App() {
 
   const handleAddToCart = async (productId: string) => {
     const product = productData.products.find((p: any) => p.id === productId);
-    await addToCartMutation({ variables: { userId: USER_ID, productId, quantity: 1 } });
+    await addToCartMutation({
+      variables: { userId: USER_ID, productId, quantity: 1 },
+    });
 
     setCartItems((prev) => {
       const existing = prev.find((item) => item.productId === productId);
       if (existing) {
         return prev.map((item) =>
-          item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
-      return [...prev, { productId, name: product.name, price: product.price, quantity: 1 }];
+      return [
+        ...prev,
+        { productId, name: product.name, price: product.price, quantity: 1 },
+      ];
     });
   };
 
@@ -51,36 +68,55 @@ function App() {
   if (productError) return <p>Error: {productError.message}</p>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
-      <ProductList products={productData.products} onAddToCart={handleAddToCart} />
+    <BrowserRouter>
+      <Header />
+      <main className="p-4">
+        <Routes>
+          <Route path="/" element={<ProductPage />} />
+          <Route path="/boys" element={<ProductPage category="Boys" />} />
+          <Route path="/girls" element={<ProductPage category="Girls" />} />
+          <Route
+            path="/gender-neutral"
+            element={<ProductPage category="Gender Neutral" />}
+          />
+          <Route
+            path="/new-arrivals"
+            element={<ProductPage category="New Arrivals" />}
+          />
+        </Routes>
+      </main>
+    </BrowserRouter>
+    // <div className="p-6">
+    //   <Header />
+    //   <h1 className="text-2xl font-bold mb-4">Products</h1>
+    //   <ProductList products={productData.products} onAddToCart={handleAddToCart} />
 
-      <Cart cartItems={cartItems} onCheckout={handleCheckout} />
+    //   <Cart cartItems={cartItems} onCheckout={handleCheckout} />
 
-      <div className="mt-8">
-        <h2 className="text-xl font-bold mb-2">Order History</h2>
-        {orderData?.orderHistory?.length === 0 ? (
-          <p>No past orders.</p>
-        ) : (
-          <ul>
-            {orderData?.orderHistory.map((order: any) => (
-              <li key={order.id} className="border p-2 rounded mb-2">
-                <p>
-                  <strong>Order ID:</strong> {order.id} | <strong>Status:</strong> {order.status} | <strong>Total:</strong> ${order.totalPrice}
-                </p>
-                <ul className="ml-4">
-                  {order.items.map((item: any) => (
-                    <li key={item.productId}>
-                      {item.product.name} x {item.quantity} = ${item.product.price * item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
+    //   <div className="mt-8">
+    //     <h2 className="text-xl font-bold mb-2">Order History</h2>
+    //     {orderData?.orderHistory?.length === 0 ? (
+    //       <p>No past orders.</p>
+    //     ) : (
+    //       <ul>
+    //         {orderData?.orderHistory.map((order: any) => (
+    //           <li key={order.id} className="border p-2 rounded mb-2">
+    //             <p>
+    //               <strong>Order ID:</strong> {order.id} | <strong>Status:</strong> {order.status} | <strong>Total:</strong> ${order.totalPrice}
+    //             </p>
+    //             <ul className="ml-4">
+    //               {order.items.map((item: any) => (
+    //                 <li key={item.productId}>
+    //                   {item.product.name} x {item.quantity} = ${item.product.price * item.quantity}
+    //                 </li>
+    //               ))}
+    //             </ul>
+    //           </li>
+    //         ))}
+    //       </ul>
+    //     )}
+    //   </div>
+    // </div>
   );
 }
 
