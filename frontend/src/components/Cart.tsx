@@ -1,19 +1,42 @@
 import React from "react";
 
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_CART, CHECKOUT } from "../graphql";
+
 interface CartItem {
   productId: string;
   name: string;
   price: number;
   quantity: number;
+  imgageUrl: string;
 }
 
 interface CartProps {
-  cartItems: CartItem[];
-  onCheckout: () => void;
+  userId: string;
 }
 
-const Cart: React.FC<CartProps> = ({ cartItems, onCheckout }) => {
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+const Cart: React.FC<CartProps> = ({ userId }) => {
+  const { data, loading, error, refetch } = useQuery(GET_CART, {
+    variables: { userId },
+  });
+
+  const [checkout] = useMutation(CHECKOUT, {
+    onCompleted: () => refetch(), // Refresh cart after checkout
+  });
+
+  if (loading) return <p>Loading cart...</p>;
+  if (error) return <p>Error loading cart</p>;
+
+  const cartItems: CartItem[] = data?.cart ?? [];
+
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const handleCheckout = async () => {
+    await checkout({ variables: { userId } });
+  };
 
   return (
     <div className="mt-6 border p-4 rounded">
@@ -24,15 +47,17 @@ const Cart: React.FC<CartProps> = ({ cartItems, onCheckout }) => {
         <>
           <ul>
             {cartItems.map((item) => (
-              <li key={item.productId} className="flex justify-between">
-                <span>{item.name} x {item.quantity}</span>
-                <span>${item.price * item.quantity}</span>
+              <li key={item.productId} className="flex justify-between mb-2">
+                <span>
+                  {item.name} x {item.quantity}
+                </span>
+                <span>${(item.price * item.quantity).toFixed(2)}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-2 font-bold">Total: ${total}</p>
+          <p className="mt-2 font-bold">Total: ${total.toFixed(2)}</p>
           <button
-            onClick={onCheckout}
+            onClick={handleCheckout}
             className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
           >
             Checkout
@@ -44,24 +69,3 @@ const Cart: React.FC<CartProps> = ({ cartItems, onCheckout }) => {
 };
 
 export default Cart;
-
-
-// import { useMutation } from '@apollo/client';
-// import { CHECKOUT } from '../graphql/mutations';
-
-// const Cart = ({ userId, cartItems }: { userId: string; cartItems: any[] }) => {
-//   const [checkout] = useMutation(CHECKOUT);
-
-//   return (
-//     <div>
-//       {cartItems.map(item => (
-//         <div key={item.productId}>
-//           {item.productId} x {item.quantity}
-//         </div>
-//       ))}
-//       <button onClick={() => checkout({ variables: { userId } })}>Checkout</button>
-//     </div>
-//   );
-// };
-
-// export default Cart;

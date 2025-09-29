@@ -48,6 +48,9 @@ const Header: React.FC = () => {
         >
           Gifts
         </Link>
+        <div>
+            <Link to="/cart" style={{ textDecoration: "none", color: "white" }}>Cart</Link>
+        </div>
       </div>
     </div>
   );

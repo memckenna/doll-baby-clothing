@@ -72,17 +72,18 @@ function App() {
       <Header />
       <main className="p-4">
         <Routes>
-          <Route path="/" element={<ProductPage />} />
-          <Route path="/boys" element={<ProductPage category="Boys" />} />
-          <Route path="/girls" element={<ProductPage category="Girls" />} />
+          <Route path="/" element={<ProductPage userId={USER_ID} />} />
+          <Route path="/boys" element={<ProductPage userId={USER_ID} category="Boys" />} />
+          <Route path="/girls" element={<ProductPage userId={USER_ID} category="Girls" />} />
           <Route
             path="/gifts"
-            element={<ProductPage category="Gifts" />}
+            element={<ProductPage userId={USER_ID} category="Gifts" />}
           />
           <Route
             path="/new-arrivals"
-            element={<ProductPage category="New Arrivals" />}
+            element={<ProductPage userId={USER_ID} category="New Arrivals" />}
           />
+          <Route path="/cart" element={<Cart userId={USER_ID}/>} />
         </Routes>
       </main>
     </BrowserRouter>

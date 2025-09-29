@@ -1,4 +1,5 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import { ADD_TO_CART } from "../graphql";
 
 const GET_PRODUCTS = gql`
   query Products($category: String) {
@@ -24,12 +25,15 @@ interface Product {
 
 interface ProductPageProps {
   category?: string;
+  userId?: string;
 }
 
-const ProductPage = ({ category }: ProductPageProps) => {
+const ProductPage = ({ category, userId }: ProductPageProps) => {
   const { data, loading, error } = useQuery(GET_PRODUCTS, {
     variables: { category },
   });
+
+  const [addToCart] = useMutation(ADD_TO_CART);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -55,19 +59,23 @@ const ProductPage = ({ category }: ProductPageProps) => {
             alignItems: "center",
           }}
         >
-          <h2 style={{ fontWeight: "bold", marginBottom: "8px" }}>
-            {product.name}
-          </h2>
-          <p style={{ marginBottom: "8px" }}>{product.description}</p>
-          <p style={{ marginBottom: "8px" }}>${product.price}</p>
-          <p style={{ color: "#666", marginBottom: "8px" }}>
-            {product.category}
-          </p>
           <img
             src={product.imageUrl}
             alt={product.name}
             style={{ width: "200px", height: "auto", objectFit: "contain" }}
           />
+          <h2 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+            {product.name}
+          </h2>
+          <p style={{ marginBottom: "8px" }}>{product.description}</p>
+          <p style={{ marginBottom: "8px" }}>${product.price}</p>
+          {/* <p style={{ color: "#666", marginBottom: "8px" }}>
+            {product.category}
+          </p> */}
+          <button
+            style={{}}
+            onClick={() => addToCart({variables: { userId, productId: product.id, quantity: 1 }})}
+          >Add To Cart</button>
         </div>
       ))}
     </div>

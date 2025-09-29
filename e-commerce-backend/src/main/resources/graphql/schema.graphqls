@@ -12,6 +12,14 @@ type CartItem {
   quantity: Int!
 }
 
+type CartItemDetails {
+  productId: ID!
+  name: String!
+  price: Float!
+  imageUrl: String
+  quantity: Int!
+}
+
 type Order {
   id: ID!
   userId: ID!
@@ -24,6 +32,7 @@ type Order {
 type Query {
   products(search: String, category: String): [Product!]!
   orderHistory(userId: ID!): [Order!]!
+  cart(userId: ID!): [CartItemDetails!]!
 }
 
 type Mutation {

@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.doll_baby_clothing.e_commerce.model.CartItem;
+import com.doll_baby_clothing.e_commerce.model.CartItemDetails;
 import com.doll_baby_clothing.e_commerce.model.Order;
 import com.doll_baby_clothing.e_commerce.model.Product;
 import com.doll_baby_clothing.e_commerce.repository.OrderRepository;
 import com.doll_baby_clothing.e_commerce.repository.ProductRepository;
+import com.doll_baby_clothing.e_commerce.service.CartService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,38 +25,41 @@ import org.springframework.stereotype.Controller;
 public class MutationResolver {
     private final OrderRepository orderRepo;
     private final ProductRepository productRepo;
+    private final CartService cartService;
 
     // For simplicity, store cart in memory (later we’ll persist it in MongoDB)
     private final Map<String, List<CartItem>> userCarts = new HashMap<>();
 
     @MutationMapping
-    public List<CartItem> addToCart(
-            @Argument String userId,
-            @Argument String productId,
-            @Argument int quantity) {
-        var cart = userCarts.getOrDefault(userId, new ArrayList<>());
-        cart.add(new CartItem(productId, quantity));
-        userCarts.put(userId, cart);
-        return cart;
+    public List<CartItemDetails> addToCart(@Argument String userId,
+                                           @Argument String productId,
+                                           @Argument int quantity) {
+        List<CartItem> items = cartService.addToCart(userId, productId, quantity);
+        return items.stream()
+                .map(ci -> {
+                    var product = productRepo.findById(ci.getProductId()).orElseThrow();
+                    return new CartItemDetails(ci.getProductId(), product.getName(), product.getPrice(), productId, ci.getQuantity());
+                })
+                .toList();
     }
+
 
     @MutationMapping
     public Order checkout(@Argument String userId) {
-        List<CartItem> cart = userCarts.getOrDefault(userId, new ArrayList<>());
-        double total = cart.stream()
-                .mapToDouble(ci -> productRepo.findById(ci.getProductId())
-                        .orElseThrow().getPrice() * ci.getQuantity())
+        List<CartItem> cartItems = cartService.getCart(userId);
+        double total = cartItems.stream()
+                .mapToDouble(ci -> productRepo.findById(ci.getProductId()).orElseThrow().getPrice() * ci.getQuantity())
                 .sum();
 
         Order order = new Order();
         order.setUserId(userId);
-        order.setItems(cart);
+        order.setItems(cartItems);
         order.setTotalPrice(total);
-        order.setCreatedAt(LocalDateTime.now());
+        order.setCreatedAt(java.time.LocalDateTime.now());
         order.setStatus("COMPLETED");
 
         orderRepo.save(order);
-        userCarts.remove(userId);
+        cartService.clearCart(userId);
         return order;
     }
 

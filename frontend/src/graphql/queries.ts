@@ -8,6 +8,7 @@ export const GET_PRODUCTS = gql`
       description
       price
       imageUrl
+      category
     }
   }
 `;
@@ -27,6 +28,18 @@ export const GET_ORDER_HISTORY = gql`
           price
         }
       }
+    }
+  }
+`;
+
+export const GET_CART = gql`
+  query GetCart($userId: ID!) {
+    cart(userId: $userId) {
+      productId
+      name
+      price
+      quantity
+      imageUrl
     }
   }
 `;
