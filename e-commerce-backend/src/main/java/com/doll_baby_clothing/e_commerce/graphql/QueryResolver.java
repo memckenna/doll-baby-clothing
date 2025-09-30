@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -76,11 +77,18 @@ public class QueryResolver {
     @QueryMapping
     public List<CartItemDetails> cart(@Argument String userId) {
         return cartService.getCart(userId).stream()
-                .map(ci -> {
-                    var product = productRepo.findById(ci.getProductId()).orElseThrow();
-                    return new CartItemDetails(ci.getProductId(), product.getName(), product.getPrice(), userId,
-                            ci.getQuantity());
-                })
-                .toList();
+                .map((CartItem ci) -> {
+            var product = productRepo.findById(ci.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found: " + ci.getProductId()));
+
+            return new CartItemDetails(
+                    ci.getProductId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl(),
+                    ci.getQuantity()
+            );
+        })
+        .collect(Collectors.toList()); // 👈 force concrete List<CartItemDetails>
     }
 }

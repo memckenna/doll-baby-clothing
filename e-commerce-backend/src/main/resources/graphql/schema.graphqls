@@ -16,14 +16,14 @@ type CartItemDetails {
   productId: ID!
   name: String!
   price: Float!
-  imageUrl: String
+  imageUrl: String!
   quantity: Int!
 }
 
 type Order {
   id: ID!
   userId: ID!
-  items: [CartItem!]!
+  items: [CartItemDetails!]!
   totalPrice: Float!
   createdAt: String!
   status: String!

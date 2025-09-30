@@ -2,13 +2,14 @@ import React from "react";
 
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_CART, CHECKOUT } from "../graphql";
+import { useNavigate } from "react-router-dom";
 
 interface CartItem {
   productId: string;
   name: string;
   price: number;
   quantity: number;
-  imgageUrl: string;
+  imageUrl: string;
 }
 
 interface CartProps {
@@ -19,23 +20,20 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
   const { data, loading, error, refetch } = useQuery(GET_CART, {
     variables: { userId },
   });
-
-  const [checkout] = useMutation(CHECKOUT, {
-    onCompleted: () => refetch(), // Refresh cart after checkout
-  });
+  const navigate = useNavigate();
 
   if (loading) return <p>Loading cart...</p>;
   if (error) return <p>Error loading cart</p>;
 
   const cartItems: CartItem[] = data?.cart ?? [];
-
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
   const handleCheckout = async () => {
-    await checkout({ variables: { userId } });
+    // Navigate to checkout page with state
+    navigate("/checkout", { state: { cartItems, total, userId } });
   };
 
   return (
@@ -45,16 +43,42 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
         <p>Your cart is empty.</p>
       ) : (
         <>
-          <ul>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(1, 1fr)",
+              gap: "20px",
+              padding: "20px",
+            }}
+          >
             {cartItems.map((item) => (
-              <li key={item.productId} className="flex justify-between mb-2">
+              <div
+                key={item.productId}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  width: "200px",
+                  height: "250px",
+                  gap: '5px'
+                }}
+              >
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  style={{ width: "100px", height: "auto" }}
+                />
                 <span>
-                  {item.name} x {item.quantity}
+                  {item.name}
                 </span>
+                <span>Quantity: {item.quantity}</span>
                 <span>${(item.price * item.quantity).toFixed(2)}</span>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
           <p className="mt-2 font-bold">Total: ${total.toFixed(2)}</p>
           <button
             onClick={handleCheckout}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.doll_baby_clothing.e_commerce.model.CartItem;
 import com.doll_baby_clothing.e_commerce.model.CartItemDetails;
@@ -32,36 +33,59 @@ public class MutationResolver {
 
     @MutationMapping
     public List<CartItemDetails> addToCart(@Argument String userId,
-                                           @Argument String productId,
-                                           @Argument int quantity) {
+            @Argument String productId,
+            @Argument int quantity) {
         List<CartItem> items = cartService.addToCart(userId, productId, quantity);
         return items.stream()
-                .map(ci -> {
-                    var product = productRepo.findById(ci.getProductId()).orElseThrow();
-                    return new CartItemDetails(ci.getProductId(), product.getName(), product.getPrice(), productId, ci.getQuantity());
-                })
-                .toList();
+        .map((CartItem ci) -> {
+            var product = productRepo.findById(ci.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found: " + ci.getProductId()));
+
+            return new CartItemDetails(
+                    ci.getProductId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl(),
+                    ci.getQuantity()
+            );
+        })
+        .collect(Collectors.toList());
     }
 
+@MutationMapping
+public Order checkout(@Argument String userId) {
+    List<CartItem> cart = cartService.getCart(userId);
 
-    @MutationMapping
-    public Order checkout(@Argument String userId) {
-        List<CartItem> cartItems = cartService.getCart(userId);
-        double total = cartItems.stream()
-                .mapToDouble(ci -> productRepo.findById(ci.getProductId()).orElseThrow().getPrice() * ci.getQuantity())
-                .sum();
+    List<CartItemDetails> enrichedItems = cart.stream()
+            .map((CartItem ci) -> {
+                var product = productRepo.findById(ci.getProductId())
+                        .orElseThrow(() -> new IllegalArgumentException("Product not found: " + ci.getProductId()));
 
-        Order order = new Order();
-        order.setUserId(userId);
-        order.setItems(cartItems);
-        order.setTotalPrice(total);
-        order.setCreatedAt(java.time.LocalDateTime.now());
-        order.setStatus("COMPLETED");
+                return new CartItemDetails(
+                        ci.getProductId(),
+                        product.getName(),
+                        product.getPrice(),
+                        product.getImageUrl(),
+                        ci.getQuantity()
+                );
+            })
+            .collect(Collectors.toList());
 
-        orderRepo.save(order);
-        cartService.clearCart(userId);
-        return order;
-    }
+    double total = enrichedItems.stream()
+            .mapToDouble(item -> item.getPrice() * item.getQuantity())
+            .sum();
+
+    Order order = new Order();
+    order.setUserId(userId);
+    order.setItems(enrichedItems);
+    order.setTotalPrice(total);
+    order.setCreatedAt(LocalDateTime.now());
+    order.setStatus("COMPLETED");
+
+    orderRepo.save(order);
+    cartService.clearCart(userId); // ✅ empty cart after checkout
+    return order;
+}
 
     @MutationMapping
     public Order updateOrderStatus(@Argument String orderId, @Argument String status) {

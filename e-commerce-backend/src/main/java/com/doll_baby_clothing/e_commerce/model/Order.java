@@ -18,7 +18,7 @@ public class Order {
     @Id
     private String id;
     private String userId;
-    private List<CartItem> items;
+    private List<CartItemDetails> items;
     private double totalPrice;
     private LocalDateTime createdAt;
     private String status; // PENDING, COMPLETED, CANCELLED

@@ -14,9 +14,15 @@ export const CHECKOUT = gql`
     checkout(userId: $userId) {
       id
       totalPrice
-      items { productId quantity }
       createdAt
       status
+      items {
+        productId
+        name
+        price
+        quantity
+        imageUrl
+      }
     }
   }
 `;

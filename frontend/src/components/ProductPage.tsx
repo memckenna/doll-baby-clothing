@@ -1,5 +1,5 @@
 import { useQuery, gql, useMutation } from "@apollo/client";
-import { ADD_TO_CART } from "../graphql";
+import { ADD_TO_CART, GET_CART } from "../graphql";
 
 const GET_PRODUCTS = gql`
   query Products($category: String) {
@@ -33,7 +33,9 @@ const ProductPage = ({ category, userId }: ProductPageProps) => {
     variables: { category },
   });
 
-  const [addToCart] = useMutation(ADD_TO_CART);
+  const [addToCart] = useMutation(ADD_TO_CART, {
+    refetchQueries: [{ query: GET_CART, variables: { userId } }],
+  });
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
