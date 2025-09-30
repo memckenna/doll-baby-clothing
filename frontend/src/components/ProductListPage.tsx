@@ -1,4 +1,4 @@
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { ADD_TO_CART, GET_CART, GET_PRODUCTS } from "../graphql";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -107,7 +107,7 @@ const ProductListPage = ({ category, userId }: ProductPageProps) => {
               {/* <p style={{ color: "#666", marginBottom: "8px" }}>
                 {product.category}
               </p> */}
-              <button
+              {/* <button
                 style={{
                   backgroundColor: "lightblue",
                   color: "white",
@@ -133,7 +133,7 @@ const ProductListPage = ({ category, userId }: ProductPageProps) => {
                 }
               >
                 Add To Cart
-              </button>
+              </button> */}
             </div>
           </Link>
         ))}

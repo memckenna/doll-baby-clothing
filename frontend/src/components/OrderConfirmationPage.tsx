@@ -18,19 +18,23 @@ const OrderConfirmationPage: React.FC = () => {
       </p>
 
       <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
-      <ul className="mb-4">
+      <div>
         {order.items.map((item: any) => (
-          <li key={item.productId} className="flex justify-between">
+          <div key={item.productId} className="flex justify-between">
             <span>
               {item.productId} x {item.quantity}
             </span>
             <span>${item.quantity * 20}</span>{" "}
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              style={{ width: "100px", height: "auto" }}
+            />
             {/* replace with real price if needed */}
-          </li>
+          </div>
         ))}
-      </ul>
-
-      <p className="font-bold mb-6">Total: ${order.totalPrice}</p>
+      </div>
+      <p className="font-bold mb-6">Total: ${order.totalPrice.toFixed(2)}</p>
 
       <button
         onClick={() => navigate("/")}

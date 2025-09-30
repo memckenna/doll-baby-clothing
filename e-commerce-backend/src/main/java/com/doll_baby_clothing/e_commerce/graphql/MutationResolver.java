@@ -1,10 +1,7 @@
 package com.doll_baby_clothing.e_commerce.graphql;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.doll_baby_clothing.e_commerce.model.CartItem;
@@ -27,9 +24,6 @@ public class MutationResolver {
     private final OrderRepository orderRepo;
     private final ProductRepository productRepo;
     private final CartService cartService;
-
-    // For simplicity, store cart in memory (later we’ll persist it in MongoDB)
-    private final Map<String, List<CartItem>> userCarts = new HashMap<>();
 
     @MutationMapping
     public List<CartItemDetails> addToCart(@Argument String userId,

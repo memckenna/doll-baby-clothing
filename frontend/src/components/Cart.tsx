@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_CART, CHECKOUT } from "../graphql";
+import { useQuery } from "@apollo/client";
+import { GET_CART } from "../graphql";
 import { useNavigate } from "react-router-dom";
 
 interface CartItem {
@@ -17,7 +17,7 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ userId }) => {
-  const { data, loading, error, refetch } = useQuery(GET_CART, {
+  const { data, loading, error } = useQuery(GET_CART, {
     variables: { userId },
   });
   const navigate = useNavigate();
