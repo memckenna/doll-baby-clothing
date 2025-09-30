@@ -57,13 +57,13 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  justifyContent: "center",
+                  alignItems: "center",
                   border: "1px solid #ccc",
                   borderRadius: "8px",
                   width: "200px",
                   height: "250px",
-                  gap: '5px'
+                  gap: "5px",
                 }}
               >
                 <img
@@ -71,9 +71,7 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                   alt={item.name}
                   style={{ width: "100px", height: "auto" }}
                 />
-                <span>
-                  {item.name}
-                </span>
+                <span>{item.name}</span>
                 <span>Quantity: {item.quantity}</span>
                 <span>${(item.price * item.quantity).toFixed(2)}</span>
               </div>
@@ -82,7 +80,24 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
           <p className="mt-2 font-bold">Total: ${total.toFixed(2)}</p>
           <button
             onClick={handleCheckout}
-            className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+              style={{
+                backgroundColor: "lightblue",
+                color: "white",
+                padding: "12px 24px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: "bold",
+                transition: "all 0.3s ease",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = 'rgba(26, 156, 243, 0.1)')
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = 'lightblue')
+              }
           >
             Checkout
           </button>

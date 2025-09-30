@@ -10,9 +10,8 @@ const CheckoutPage: React.FC = () => {
 
   const [checkout] = useMutation(CHECKOUT, {
     refetchQueries: [{ query: GET_CART, variables: { userId } }],
-      //   onCompleted: () => refetch(), // Refresh cart after checkout
+    //   onCompleted: () => refetch(), // Refresh cart after checkout
   });
-
 
   const handleConfirm = async () => {
     const { data } = await checkout({ variables: { userId } });
@@ -42,6 +41,24 @@ const CheckoutPage: React.FC = () => {
       <button
         onClick={handleConfirm}
         className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+        style={{
+          backgroundColor: "lightblue",
+          color: "white",
+          padding: "12px 24px",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          fontSize: "16px",
+          fontWeight: "bold",
+          transition: "all 0.3s ease",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.backgroundColor = "rgba(26, 156, 243, 0.1)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.backgroundColor = "lightblue")
+        }
       >
         Confirm Order
       </button>

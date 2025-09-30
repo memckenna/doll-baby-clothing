@@ -1,57 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  userId: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ userId }) => {
   return (
-    <div style={{ margin: "20px" }}>
+    <div
+      style={{
+        // margin: "100px",
+        // display: "flex",
+        // justifyContent: "center",
+        // alignItems: "center",
+        gap: "150px",
+        backgroundColor: "white",
+        // height: "50px",
+        position: "sticky", // <-- makes it stick
+        top: 0, // <-- stick to top
+        zIndex: 1000, // ensure it stays above content
+      }}
+    >
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
+        style={{ display: "flex", justifyContent: "center", }}
       >
         <div style={{ color: "lightskyblue", fontSize: "20px" }}>
           <h1>The Modern Nursery</h1>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "150px",
-          backgroundColor: 'darkseagreen',
-          height: '50px'
-        }}
-      >
-        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-          All Products
-        </Link>
-        <Link
-          to="/new-arrivals"
-          style={{ textDecoration: "none", color: "white" }}
-        >
-          New Arrivals
-        </Link>
-        <Link
-          to="/boys"
-          style={{ textDecoration: "none", color: "white" }}
-        >
-          Boys
-        </Link>
-        <Link
-          to="/girls"
-          style={{ textDecoration: "none", color: "white" }}
-        >
-          Girls
-        </Link>
-        <Link
-          to="/gifts"
-          style={{ textDecoration: "none", color: "white" }}
-        >
-          Gifts
-        </Link>
-        <div>
-            <Link to="/cart" style={{ textDecoration: "none", color: "white" }}>Cart</Link>
-        </div>
-      </div>
+      <NavigationBar userId={userId} />
     </div>
   );
 };

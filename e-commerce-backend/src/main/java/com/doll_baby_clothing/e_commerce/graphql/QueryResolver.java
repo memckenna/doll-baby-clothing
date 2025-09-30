@@ -91,4 +91,10 @@ public class QueryResolver {
         })
         .collect(Collectors.toList()); // 👈 force concrete List<CartItemDetails>
     }
+
+    @QueryMapping
+    public Product product(@Argument String id) {
+        return productRepo.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Product not found:" + id));
+    }
 }

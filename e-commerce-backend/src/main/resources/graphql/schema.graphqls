@@ -31,6 +31,7 @@ type Order {
 
 type Query {
   products(search: String, category: String): [Product!]!
+  product(id: ID!): Product
   orderHistory(userId: ID!): [Order!]!
   cart(userId: ID!): [CartItemDetails!]!
 }
