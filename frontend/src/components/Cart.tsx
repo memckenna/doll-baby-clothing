@@ -37,7 +37,7 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
   };
 
   return (
-    <div className="mt-6 border p-4 rounded">
+    <div style={{width: '300px'}}>
       <h2 className="text-xl font-bold mb-2">Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -77,7 +77,10 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
               </div>
             ))}
           </div>
-          <p className="mt-2 font-bold">Total: ${total.toFixed(2)}</p>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div>Total:</div>
+            <div>${total.toFixed(2)}</div>
+          </div>
           <button
             onClick={handleCheckout}
               style={{
