@@ -14,15 +14,40 @@ const OrderConfirmationPage: React.FC = () => {
     <div className="p-6 text-center">
       <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
       <p className="mb-6">
-        Your order ID is <strong>{order.id}</strong>.
+        Your order confirmation number is <strong>{order.id}</strong>.
       </p>
 
       <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
-      <div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(1, 1fr)",
+          gap: "20px",
+          padding: "20px",
+        }}
+      >
         {order.items.map((item: any) => (
-          <div key={item.productId} className="flex justify-between">
-            <span>
-              {item.productId} x {item.quantity}
+          <div
+            key={item.productId}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              width: "400px",
+              height: "250px",
+              gap: "5px",
+            }}
+          >
+            <span style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{paddingRight: '8px'}}>Order Number: </div>
+              <div>{item.productId}</div>
+            </span>
+            <span style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{paddingRight: '8px'}}>Quanity: </div>
+              <div>{item.quantity}</div>
             </span>
             <span>${item.quantity * 20}</span>{" "}
             <img
