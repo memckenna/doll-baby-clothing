@@ -60,46 +60,66 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
         style={{
           padding: "20px",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
+          justifyContent: 'center',
           alignItems: "center",
+          color: "darkseagreen",
         }}
       >
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          style={{ width: "300px", objectFit: "contain" }}
-        />
-        <h1>{product.name}</h1>
-        <p>{product.description}</p>
-        <p>${product.price}</p>
-        <p>{product.category}</p>
-        <button
+        <div style={{ paddingRight: '100px'}}>
+            <img
+            src={product.imageUrl}
+            alt={product.name}
+            style={{
+                width: "300px",
+                objectFit: "contain",
+                borderRadius: "5px",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+            }}
+            />
+        </div>
+        <div
           style={{
-            backgroundColor: "lightblue",
-            color: "white",
-            padding: "12px 24px",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontSize: "16px",
-            fontWeight: "bold",
-            transition: "all 0.3s ease",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            display: "flex",
+            flexDirection: "column",
+            color: "darkseagreen",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "rgba(26, 156, 243, 0.1)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "lightblue")
-          }
-          onClick={() =>
-            addToCart({
-              variables: { userId, productId: product.id, quantity: 1 },
-            })
-          }
         >
-          Add To Cart
-        </button>
+          <div style={{ fontSize: "24px", }}>{product.name}</div>
+          <div style={{display: 'flex', flexDirection: 'row'}} >
+            <div style={{ paddingRight: '12px', fontWeight: 'bold'}}>Product Description:</div>
+            <div>{product.description}</div>
+          </div>
+          <div style={{ paddingBottom: '100px', fontWeight: 'bold'}}>${product.price}</div>
+          <button
+            style={{
+              backgroundColor: "lightblue",
+              color: "white",
+              padding: "12px 24px",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: "bold",
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor =
+                "rgba(26, 156, 243, 0.1)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "lightblue")
+            }
+            onClick={() =>
+              addToCart({
+                variables: { userId, productId: product.id, quantity: 1 },
+              })
+            }
+          >
+            Add To Cart
+          </button>
+        </div>
       </div>
     </div>
   );

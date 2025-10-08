@@ -2,7 +2,7 @@ import React from "react";
 
 import { useQuery } from "@apollo/client";
 import { GET_CART } from "../graphql";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface CartItem {
   productId: string;
@@ -37,7 +37,7 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
   };
 
   return (
-    <div style={{width: '300px'}}>
+    <div style={{ width: "300px" }}>
       <h2 className="text-xl font-bold mb-2">Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -52,37 +52,65 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
             }}
           >
             {cartItems.map((item) => (
-              <div
+              <Link
                 key={item.productId}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  width: "200px",
-                  height: "250px",
-                  gap: "5px",
-                }}
+                to={`/product/${item.productId}`}
+                style={{ textDecoration: "none", color: "darkseagreen" }}
               >
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  style={{ width: "100px", height: "auto" }}
-                />
-                <span>{item.name}</span>
-                <span>Quantity: {item.quantity}</span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
-              </div>
+                <div
+                  key={item.productId}
+                  style={{
+                    display: "flex",
+                    // flexDirection: "column",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    width: "400px",
+                    height: "250px",
+                    gap: "5px",
+                  }}
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name}
+                    style={{ width: "100px", height: "auto" }}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      paddingLeft: "58px",
+                    }}
+                  >
+                    <span style={{ paddingBottom: "12px" }}>{item.name}</span>
+                    <span style={{ paddingBottom: "12px" }}>
+                      Quantity: {item.quantity}
+                    </span>
+                    <span>
+                      Price: ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "400px",
+              paddingLeft: "20px",
+              paddingBottom: "12px",
+            }}
+          >
             <div>Total:</div>
             <div>${total.toFixed(2)}</div>
           </div>
-          <button
-            onClick={handleCheckout}
+          <div style={{ paddingLeft: "20px" }}>
+            <button
+              onClick={handleCheckout}
               style={{
                 backgroundColor: "lightblue",
                 color: "white",
@@ -94,16 +122,19 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                 fontWeight: "bold",
                 transition: "all 0.3s ease",
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                width: "400px",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = 'rgba(26, 156, 243, 0.1)')
+                (e.currentTarget.style.backgroundColor =
+                  "rgba(26, 156, 243, 0.1)")
               }
               onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = 'lightblue')
+                (e.currentTarget.style.backgroundColor = "lightblue")
               }
-          >
-            Checkout
-          </button>
+            >
+              Checkout
+            </button>
+          </div>
         </>
       )}
     </div>

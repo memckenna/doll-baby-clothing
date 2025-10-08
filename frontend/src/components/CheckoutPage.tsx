@@ -32,7 +32,6 @@ const CheckoutPage: React.FC = () => {
           display: "grid",
           gridTemplateColumns: "repeat(1, 1fr)",
           gap: "20px",
-          // padding: "20px",
           borderBottom: "1px solid #ccc",
           width: '500px',
         }}
@@ -43,13 +42,9 @@ const CheckoutPage: React.FC = () => {
             style={{
               display: "flex",
               flexDirection: "row",
-              // justifyContent: "center",
               alignItems: "center",
               borderTop: "1px solid #ccc",
-              // borderBottom: "1px solid #ccc",
-              // borderRadius: "8px",
               width: "500px",
-              // height: "250px",
               gap: "25px",
               paddingTop: "10px",
             }}
