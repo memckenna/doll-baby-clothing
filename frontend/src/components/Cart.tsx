@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useQuery } from "@apollo/client";
-import { GET_CART } from "../graphql";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM } from "../graphql";
 import { Link, useNavigate } from "react-router-dom";
 
 interface CartItem {
@@ -20,6 +20,13 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
   const { data, loading, error } = useQuery(GET_CART, {
     variables: { userId },
   });
+  const [updateCartItem] = useMutation(UPDATE_CART_ITEM, {
+    refetchQueries: [{ query: GET_CART, variables: { userId } }],
+  });
+
+  const [removeFromCart] = useMutation(REMOVE_FROM_CART, {
+    refetchQueries: [{ query: GET_CART, variables: { userId } }],
+  });
   const navigate = useNavigate();
 
   if (loading) return <p>Loading cart...</p>;
@@ -34,6 +41,32 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
   const handleCheckout = async () => {
     // Navigate to checkout page with state
     navigate("/checkout", { state: { cartItems, total, userId } });
+  };
+
+  const handleIncrease = (item: CartItem) => {
+    updateCartItem({
+      variables: {
+        userId,
+        productId: item.productId,
+        quantity: item.quantity + 1,
+      },
+    });
+  };
+
+  const handleDecrease = (item: CartItem) => {
+    if (item.quantity > 1) {
+      updateCartItem({
+        variables: {
+          userId,
+          productId: item.productId,
+          quantity: item.quantity - 1,
+        },
+      });
+    } else {
+      removeFromCart({
+        variables: { userId, productId: item.productId },
+      });
+    }
   };
 
   return (
@@ -52,48 +85,95 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
             }}
           >
             {cartItems.map((item) => (
-              <Link
+              <div
                 key={item.productId}
-                to={`/product/${item.productId}`}
-                style={{ textDecoration: "none", color: "darkseagreen" }}
+                style={{
+                  display: "flex",
+                  // flexDirection: "column",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  width: "400px",
+                  height: "250px",
+                  gap: "5px",
+                }}
               >
-                <div
+                <Link
                   key={item.productId}
-                  style={{
-                    display: "flex",
-                    // flexDirection: "column",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    width: "400px",
-                    height: "250px",
-                    gap: "5px",
-                  }}
+                  to={`/product/${item.productId}`}
+                  style={{ textDecoration: "none", color: "darkseagreen" }}
                 >
                   <img
                     src={item.imageUrl}
                     alt={item.name}
                     style={{ width: "100px", height: "auto" }}
                   />
+                </Link>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingLeft: "58px",
+                  }}
+                >
+                  <span style={{ paddingBottom: "12px" }}>{item.name}</span>
                   <div
                     style={{
                       display: "flex",
-                      flexDirection: "column",
-                      paddingLeft: "58px",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: "3px",
+                      // border: "1px",
+                      // backgroundColor: "#d1d5db",
+                      // width: "30px",
+                      // height: "30px",
                     }}
                   >
-                    <span style={{ paddingBottom: "12px" }}>{item.name}</span>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDecrease(item);
+                      }}
+                      style={{
+                        backgroundColor: "darkseagreen",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "30%",
+                        width: "28px",
+                        height: "28px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    >
+                      -
+                    </button>
                     <span style={{ paddingBottom: "12px" }}>
-                      Quantity: {item.quantity}
+                      {item.quantity}
                     </span>
-                    <span>
-                      Price: ${(item.price * item.quantity).toFixed(2)}
-                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleIncrease(item);
+                      }}
+                      style={{
+                        backgroundColor: "darkseagreen",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "30%",
+                        width: "28px",
+                        height: "28px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    >
+                      +
+                    </button>
                   </div>
+                  <span>Price: ${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
           <div

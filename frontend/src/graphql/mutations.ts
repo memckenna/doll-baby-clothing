@@ -9,6 +9,22 @@ export const ADD_TO_CART = gql`
   }
 `;
 
+
+export const UPDATE_CART_ITEM = gql`
+  mutation UpdateCartItem($userId: ID!, $productId: ID!, $quantity: Int!) {
+    updateCartItemQuantity(userId: $userId, productId: $productId, quantity: $quantity) {
+      productId
+      quantity
+    }
+  }
+`;
+
+export const REMOVE_FROM_CART = gql`
+  mutation RemoveFromCart($userId: ID!, $productId: ID!) {
+    removeFromCart(userId: $userId, productId: $productId)
+  }
+`;
+
 export const CHECKOUT = gql`
   mutation Checkout($userId: ID!) {
     checkout(userId: $userId) {

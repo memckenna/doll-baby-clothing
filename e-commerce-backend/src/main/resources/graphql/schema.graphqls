@@ -38,21 +38,23 @@ type Query {
 
 type Mutation {
   addToCart(userId: ID!, productId: ID!, quantity: Int!): [CartItem!]!
+  updateCartItemQuantity(userId:ID!, productId: ID!, quantity: Int!): [CartItemDetails]
+  removeFromCart(userId: ID!, productId: ID!): [CartItemDetails]
   checkout(userId: ID!): Order!
   updateOrderStatus(orderId: ID!, status: String!): Order!
   addProduct(
-    name: String!,
-    description: String,
-    price: Float!,
-    imageUrl: String,
+    name: String!
+    description: String
+    price: Float!
+    imageUrl: String
     category: String!
   ): Product!
   updateProduct(
-    id: ID!,
-    name: String,
-    description: String,
-    price: Float,
-    imageUrl: String,
+    id: ID!
+    name: String
+    description: String
+    price: Float
+    imageUrl: String
     category: String
   ): Product!
   deleteProduct(id: ID!): Boolean!

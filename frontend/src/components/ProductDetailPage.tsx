@@ -21,6 +21,7 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
   const { data, loading, error } = useQuery(GET_PRODUCT, { variables: { id } });
 
   const [confirmation, setConfirmation] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(0);
 
   const [addToCart] = useMutation(ADD_TO_CART, {
     refetchQueries: [{ query: GET_CART, variables: { userId } }],
@@ -31,11 +32,13 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
     },
   });
 
+  const increaseQuantity = () => setQuantity((q) => q + 1);
+  const decreaseQuantity = () => setQuantity((q) => (q && q > 1 ? q - 1 : 1));
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const product: Product = data.product;
-
   return (
     <div>
       {confirmation && (
@@ -61,22 +64,22 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           padding: "20px",
           display: "flex",
           flexDirection: "row",
-          justifyContent: 'center',
+          justifyContent: "center",
           alignItems: "center",
           color: "darkseagreen",
         }}
       >
-        <div style={{ paddingRight: '100px'}}>
-            <img
+        <div style={{ paddingRight: "100px" }}>
+          <img
             src={product.imageUrl}
             alt={product.name}
             style={{
-                width: "300px",
-                objectFit: "contain",
-                borderRadius: "5px",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+              width: "300px",
+              objectFit: "contain",
+              borderRadius: "5px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
             }}
-            />
+          />
         </div>
         <div
           style={{
@@ -85,12 +88,56 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
             color: "darkseagreen",
           }}
         >
-          <div style={{ fontSize: "24px", }}>{product.name}</div>
-          <div style={{display: 'flex', flexDirection: 'row'}} >
-            <div style={{ paddingRight: '12px', fontWeight: 'bold'}}>Product Description:</div>
+          <div style={{ fontSize: "24px" }}>{product.name}</div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ paddingRight: "12px", fontWeight: "bold" }}>
+              Product Description:
+            </div>
             <div>{product.description}</div>
           </div>
-          <div style={{ paddingBottom: '100px', fontWeight: 'bold'}}>${product.price}</div>
+          <div style={{ paddingBottom: "100px", fontWeight: "bold" }}>
+            ${product.price}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "2px",
+              paddingBottom: "12px",
+            }}
+          >
+            <button
+              onClick={decreaseQuantity}
+              style={{
+                backgroundColor: "darkseagreen",
+                color: "white",
+                border: "none",
+                borderRadius: "30%",
+                width: "30px",
+                height: "30px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              -
+            </button>
+            <div>{quantity}</div>
+            <button
+              onClick={increaseQuantity}
+              style={{
+                backgroundColor: "darkseagreen",
+                color: "white",
+                border: "none",
+                borderRadius: "30%",
+                width: "30px",
+                height: "30px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              +
+            </button>
+          </div>
           <button
             style={{
               backgroundColor: "lightblue",
@@ -113,7 +160,7 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
             }
             onClick={() =>
               addToCart({
-                variables: { userId, productId: product.id, quantity: 1 },
+                variables: { userId, productId: product.id, quantity },
               })
             }
           >
