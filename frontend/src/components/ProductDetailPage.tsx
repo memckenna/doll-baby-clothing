@@ -89,13 +89,13 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           }}
         >
           <div style={{ fontSize: "24px" }}>{product.name}</div>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ paddingRight: "12px", fontWeight: "bold" }}>
+          <div style={{ display: "flex", flexDirection: "row", width: '700px', paddingTop: '10px' }}>
+            <div style={{ display: 'flex', paddingRight: "12px", fontWeight: "bold" }}>
               Product Description:
             </div>
-            <div>{product.description}</div>
+            <div style={{width: '500px'}}>{product.description}</div>
           </div>
-          <div style={{ paddingBottom: "100px", fontWeight: "bold" }}>
+          <div style={{ paddingBottom: "100px", paddingTop: '50px', fontWeight: "bold", fontSize: '20px' }}>
             ${product.price}
           </div>
           <div

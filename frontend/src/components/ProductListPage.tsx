@@ -99,10 +99,10 @@ const ProductListPage = ({ category, userId }: ProductPageProps) => {
                 alt={product.name}
                 style={{ width: "200px", height: "300px", objectFit: "contain" }}
               />
-              <h2 style={{ fontWeight: "bold", marginBottom: "1px" }}>
+              <h2 style={{ fontWeight: "bold", marginBottom: "1px", alignSelf: "center" }}>
                 {product.name}
               </h2>
-              <p style={{ marginBottom: "1px" }}>{product.description}</p>
+              {/* <p style={{ marginBottom: "1px" }}>{product.description}</p> */}
               <p style={{ marginBottom: "10px" }}>${product.price}</p>
               {/* <p style={{ color: "#666", marginBottom: "8px" }}>
                 {product.category}
