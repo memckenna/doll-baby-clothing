@@ -37,14 +37,14 @@ const ProductListPage = ({ category, userId }: ProductPageProps) => {
 
   const [confirmation, setConfirmation] = useState<string | null>(null);
 
-  const [addToCart] = useMutation(ADD_TO_CART, {
-    refetchQueries: [{ query: GET_CART, variables: { userId } }],
-    onCompleted: (_) => {
-      setConfirmation("Product added to cart!");
+  // const [addToCart] = useMutation(ADD_TO_CART, {
+  //   refetchQueries: [{ query: GET_CART, variables: { userId } }],
+  //   onCompleted: (_) => {
+  //     setConfirmation("Product added to cart!");
 
-      setTimeout(() => setConfirmation(null), 2000);
-    },
-  });
+  //     setTimeout(() => setConfirmation(null), 2000);
+  //   },
+  // });
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

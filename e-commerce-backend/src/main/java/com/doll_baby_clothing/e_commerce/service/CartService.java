@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class CartService {
                 .orElse(new ArrayList<>());
     }
 
-    public List<CartItem> addToCart(String userId, String productId, int quantity) {
+    public List<CartItem> addToCart(String userId, String productId, int quantity, String size) {
         Cart cart = cartRepository.findByUserId(userId).orElse(new Cart());
         cart.setUserId(userId);
         List<CartItem> items = cart.getItems();
@@ -30,14 +31,14 @@ public class CartService {
         // Check if product is already in cart
         boolean found = false;
         for (CartItem ci : items) {
-            if (ci.getProductId().equals(productId)) {
+            if (ci.getProductId().equals(productId) && Objects.equals(ci.getSize(), size)) {
                 ci.setQuantity(ci.getQuantity() + quantity);
                 found = true;
                 break;
             }
         }
         if (!found) {
-            items.add(new CartItem(productId, quantity));
+            items.add(new CartItem(productId, quantity, size));
         }
 
         cart.setItems(items);

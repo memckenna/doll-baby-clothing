@@ -1,5 +1,7 @@
 package com.doll_baby_clothing.e_commerce.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +20,9 @@ public class Product {
     private String description;
     private double price;
     private String imageUrl;
-    private String category; // 👈 new field
+    private String category;
+
+    private List<String> sizes;
 
     // Getters and setters
     public String getCategory() {

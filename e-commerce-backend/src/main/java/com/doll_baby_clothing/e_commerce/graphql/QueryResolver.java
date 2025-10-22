@@ -84,7 +84,8 @@ public class QueryResolver {
                     product.getName(),
                     product.getPrice(),
                     product.getImageUrl(),
-                    ci.getQuantity()
+                    ci.getQuantity(),
+                    ci.getSize()
             );
         })
         .collect(Collectors.toList()); // 👈 force concrete List<CartItemDetails>

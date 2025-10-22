@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 
 export const ADD_TO_CART = gql`
-  mutation AddToCart($userId: ID!, $productId: ID!, $quantity: Int!) {
-    addToCart(userId: $userId, productId: $productId, quantity: $quantity) {
+  mutation AddToCart($userId: ID!, $productId: ID!, $quantity: Int!, $size: String) {
+    addToCart(userId: $userId, productId: $productId, quantity: $quantity, size: $size) {
       productId
       quantity
+      size
     }
   }
 `;
@@ -38,6 +39,7 @@ export const CHECKOUT = gql`
         price
         quantity
         imageUrl
+        size
       }
     }
   }

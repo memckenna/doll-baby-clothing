@@ -9,6 +9,7 @@ export const GET_PRODUCTS = gql`
       price
       category
       imageUrl
+      sizes
     }
   }
 `;
@@ -26,6 +27,7 @@ export const GET_ORDER_HISTORY = gql`
         product {
           name
           price
+          sizes
         }
       }
     }
@@ -40,6 +42,7 @@ export const GET_CART = gql`
       price
       quantity
       imageUrl
+      sizes
     }
   }
 `;
@@ -54,6 +57,7 @@ export const GET_PRODUCT = gql`
       price
       category
       imageUrl
+      sizes
     }
   }
 `;

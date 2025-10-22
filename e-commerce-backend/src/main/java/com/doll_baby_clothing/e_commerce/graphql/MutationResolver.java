@@ -28,8 +28,9 @@ public class MutationResolver {
     @MutationMapping
     public List<CartItemDetails> addToCart(@Argument String userId,
             @Argument String productId,
-            @Argument int quantity) {
-        List<CartItem> items = cartService.addToCart(userId, productId, quantity);
+            @Argument int quantity,
+            @Argument String size) {
+        List<CartItem> items = cartService.addToCart(userId, productId, quantity, size);
         return items.stream()
                 .map((CartItem ci) -> {
                     var product = productRepo.findById(ci.getProductId())
@@ -40,7 +41,8 @@ public class MutationResolver {
                             product.getName(),
                             product.getPrice(),
                             product.getImageUrl(),
-                            ci.getQuantity());
+                            ci.getQuantity(),
+                            ci.getSize());
                 })
                 .collect(Collectors.toList());
     }
@@ -62,7 +64,8 @@ public class MutationResolver {
                             product.getName(),
                             product.getPrice(),
                             product.getImageUrl(),
-                            ci.getQuantity());
+                            ci.getQuantity(),
+                            ci.getSize());
                 })
                 .collect(Collectors.toList());
     }
@@ -86,7 +89,8 @@ public class MutationResolver {
                             product.getName(),
                             product.getPrice(),
                             product.getImageUrl(),
-                            ci.getQuantity());
+                            ci.getQuantity(),
+                            ci.getSize());
                 })
                 .collect(Collectors.toList());
     }
@@ -105,7 +109,8 @@ public class MutationResolver {
                             product.getName(),
                             product.getPrice(),
                             product.getImageUrl(),
-                            ci.getQuantity());
+                            ci.getQuantity(),
+                            ci.getSize());
                 })
                 .collect(Collectors.toList());
 
@@ -139,7 +144,9 @@ public class MutationResolver {
             @Argument String description,
             @Argument double price,
             @Argument String imageUrl,
-            @Argument String category) {
+            @Argument String category,
+            @Argument List<String> sizes
+            ) {
 
         Product product = new Product();
         product.setName(name);
@@ -147,6 +154,7 @@ public class MutationResolver {
         product.setPrice(price);
         product.setImageUrl(imageUrl);
         product.setCategory(category);
+        product.setSizes(sizes);
 
         return productRepo.save(product);
     }
@@ -158,7 +166,8 @@ public class MutationResolver {
             @Argument String description,
             @Argument Double price,
             @Argument String imageUrl,
-            @Argument String category) {
+            @Argument String category,
+            @Argument List<String> sizes) {
 
         Product product = productRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + id));
@@ -173,6 +182,7 @@ public class MutationResolver {
             product.setImageUrl(imageUrl);
         if (category != null)
             product.setCategory(category);
+        if (sizes != null) product.setSizes(sizes);
 
         return productRepo.save(product);
     }

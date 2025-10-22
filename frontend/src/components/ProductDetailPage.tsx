@@ -10,11 +10,14 @@ interface Product {
   price: number;
   category: string;
   imageUrl: string;
+  sizes: Array<string>;
 }
 
 interface ProductDetailsPageProps {
   userId: string;
 }
+
+// const sizeOptions = ["Newborn", "0–3M", "3–6M", "6–12M", "12–18M", "2T", "3T", "4T", "5T"];
 
 const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +25,7 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
 
   const [confirmation, setConfirmation] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const [addToCart] = useMutation(ADD_TO_CART, {
     refetchQueries: [{ query: GET_CART, variables: { userId } }],
@@ -39,6 +43,7 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
   if (error) return <p>Error: {error.message}</p>;
 
   const product: Product = data.product;
+  const sizeOptions = product.sizes || [];
   return (
     <div>
       {confirmation && (
@@ -89,14 +94,60 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           }}
         >
           <div style={{ fontSize: "24px" }}>{product.name}</div>
-          <div style={{ display: "flex", flexDirection: "row", width: '700px', paddingTop: '10px' }}>
-            <div style={{ display: 'flex', paddingRight: "12px", fontWeight: "bold" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "700px",
+              paddingTop: "10px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                paddingRight: "12px",
+                fontWeight: "bold",
+              }}
+            >
               Product Description:
             </div>
-            <div style={{width: '500px'}}>{product.description}</div>
+            <div style={{ width: "500px" }}>{product.description}</div>
           </div>
-          <div style={{ paddingBottom: "100px", paddingTop: '50px', fontWeight: "bold", fontSize: '20px' }}>
+          <div
+            style={{
+              paddingBottom: "100px",
+              paddingTop: "50px",
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+          >
             ${product.price}
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <label style={{ fontWeight: "bold" }}>Size: </label>
+            <select
+              value={selectedSize || ""}
+              onChange={(e) => setSelectedSize(e.target.value)}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginLeft: "10px",
+              }}
+            >
+              <option value="">Select size</option>
+              {sizeOptions.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+              {/* <option value="">Select Size</option>
+              {product.sizes?.map((size: string) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))} */}
+            </select>
           </div>
           <div
             style={{
@@ -160,7 +211,12 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
             }
             onClick={() =>
               addToCart({
-                variables: { userId, productId: product.id, quantity },
+                variables: {
+                  userId,
+                  productId: product.id,
+                  quantity,
+                  size: selectedSize,
+                },
               })
             }
           >

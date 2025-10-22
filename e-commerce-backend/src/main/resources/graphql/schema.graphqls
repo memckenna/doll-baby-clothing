@@ -5,11 +5,13 @@ type Product {
   price: Float!
   imageUrl: String
   category: String
+  sizes: [String!]
 }
 
 type CartItem {
   productId: ID!
   quantity: Int!
+  size: String
 }
 
 type CartItemDetails {
@@ -18,6 +20,7 @@ type CartItemDetails {
   price: Float!
   imageUrl: String!
   quantity: Int!
+  size: String
 }
 
 type Order {
@@ -37,7 +40,7 @@ type Query {
 }
 
 type Mutation {
-  addToCart(userId: ID!, productId: ID!, quantity: Int!): [CartItem!]!
+  addToCart(userId: ID!, productId: ID!, quantity: Int!, size: String): [CartItem!]!
   updateCartItemQuantity(userId:ID!, productId: ID!, quantity: Int!): [CartItemDetails]
   removeFromCart(userId: ID!, productId: ID!): [CartItemDetails]
   checkout(userId: ID!): Order!
@@ -48,6 +51,7 @@ type Mutation {
     price: Float!
     imageUrl: String
     category: String!
+    sizes: [String!]
   ): Product!
   updateProduct(
     id: ID!
@@ -56,6 +60,7 @@ type Mutation {
     price: Float
     imageUrl: String
     category: String
+    sizes: [String!]
   ): Product!
   deleteProduct(id: ID!): Boolean!
 }
