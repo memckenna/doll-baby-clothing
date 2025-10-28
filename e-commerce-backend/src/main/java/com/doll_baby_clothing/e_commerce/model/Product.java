@@ -20,15 +20,16 @@ public class Product {
     private String description;
     private double price;
     private String imageUrl;
-    private String category;
+    private List<String> categories;
 
     private List<String> sizes;
 
     // Getters and setters
-    public String getCategory() {
-        return category;
+    public List<String> getCategories() {
+        return categories;
     }
-    public void setCategory(String category) {
-        this.category = category;
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 }

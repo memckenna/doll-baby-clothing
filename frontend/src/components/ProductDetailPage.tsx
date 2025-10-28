@@ -8,7 +8,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  category: string;
+  categories: Array<string>;
   imageUrl: string;
   sizes: Array<string>;
 }
@@ -116,78 +116,82 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           <div
             style={{
               paddingBottom: "100px",
-              paddingTop: "50px",
-              fontWeight: "bold",
-              fontSize: "20px",
+              paddingTop: "30px",
+              // fontWeight: "bold",
+              fontSize: "28px",
             }}
           >
             ${product.price}
           </div>
-          <div style={{ marginTop: "20px" }}>
-            <label style={{ fontWeight: "bold" }}>Size: </label>
-            <select
-              value={selectedSize || ""}
-              onChange={(e) => setSelectedSize(e.target.value)}
+          <div style={{display: 'flex', justifyContent: 'space-between', paddingBottom: '12px'}}>
+            <div style={{ marginTop: "5px" }}>
+              <label style={{ fontWeight: "bold" }}>Size: </label>
+              <select
+                value={selectedSize || ""}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                style={{
+                  padding: "8px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                  marginLeft: "10px",
+                }}
+              >
+                <option value="">Select Size</option>
+                {sizeOptions.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div
               style={{
-                padding: "8px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-                marginLeft: "10px",
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                // paddingBottom: "12px",
               }}
             >
-              <option value="">Select size</option>
-              {sizeOptions.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-              {/* <option value="">Select Size</option>
-              {product.sizes?.map((size: string) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))} */}
-            </select>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "2px",
-              paddingBottom: "12px",
-            }}
-          >
-            <button
-              onClick={decreaseQuantity}
-              style={{
-                backgroundColor: "darkseagreen",
-                color: "white",
-                border: "none",
-                borderRadius: "30%",
-                width: "30px",
-                height: "30px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              -
-            </button>
-            <div>{quantity}</div>
-            <button
-              onClick={increaseQuantity}
-              style={{
-                backgroundColor: "darkseagreen",
-                color: "white",
-                border: "none",
-                borderRadius: "30%",
-                width: "30px",
-                height: "30px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              +
-            </button>
+              <button
+                onClick={decreaseQuantity}
+                style={{
+                  backgroundColor: "darkseagreen",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "20%",
+                  width: "38px",
+                  height: "38px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                -
+              </button>
+              <div
+                style={{
+                  padding: "10px",
+                  border: "1px solid darkseagreen",
+                  borderRadius: "20%",
+                }}
+              >
+                {quantity}
+              </div>
+              <button
+                onClick={increaseQuantity}
+                style={{
+                  backgroundColor: "darkseagreen",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "20%",
+                  width: "38px",
+                  height: "38px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                +
+              </button>
+            </div>
           </div>
           <button
             style={{

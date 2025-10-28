@@ -10,6 +10,7 @@ interface CartItem {
   price: number;
   quantity: number;
   imageUrl: string;
+  size: string;
 }
 
 interface CartProps {
@@ -93,9 +94,10 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  width: "400px",
+                  borderTop: "1px solid #ccc",
+                  // borderBottom: "1px solid #ccc",
+                  // borderRadius: "8px",
+                  width: "800px",
                   height: "250px",
                   gap: "5px",
                 }}
@@ -118,60 +120,100 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                     paddingLeft: "58px",
                   }}
                 >
-                  <span style={{ paddingBottom: "12px" }}>{item.name}</span>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: "3px",
-                      // border: "1px",
-                      // backgroundColor: "#d1d5db",
-                      // width: "30px",
-                      // height: "30px",
-                    }}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleDecrease(item);
-                      }}
-                      style={{
-                        backgroundColor: "darkseagreen",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "30%",
-                        width: "28px",
-                        height: "28px",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                      }}
-                    >
-                      -
-                    </button>
-                    <span style={{ paddingBottom: "12px" }}>
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleIncrease(item);
-                      }}
-                      style={{
-                        backgroundColor: "darkseagreen",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "30%",
-                        width: "28px",
-                        height: "28px",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                      }}
-                    >
-                      +
-                    </button>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ paddingRight: "100px" }}>
+                      <span style={{ paddingBottom: "12px" }}>{item.name}</span>
+                      <div style={{ display: "flex" }}>
+                        <div style={{ paddingRight: "4px" }}>Size: </div>
+                        <div>{item.size}</div>
+                      </div>
+                    </div>
+                    <div style={{ paddingRight: "100px" }}>
+                      <div style={{ display: "flex" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: "3px",
+                            paddingRight: "100px",
+                            // border: "1px",
+                            // backgroundColor: "#d1d5db",
+                            // width: "30px",
+                            // height: "30px",
+                          }}
+                        >
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleDecrease(item);
+                            }}
+                            style={{
+                              backgroundColor: "darkseagreen",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "20%",
+                              width: "38px",
+                              height: "38px",
+                              fontWeight: "bold",
+                              cursor: "pointer",
+                            }}
+                          >
+                            -
+                          </button>
+                          <span
+                            style={{
+                              padding: "10px",
+                              border: "1px solid darkseagreen",
+                              borderRadius: "20%",
+                            }}
+                          >
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleIncrease(item);
+                            }}
+                            style={{
+                              backgroundColor: "darkseagreen",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "20%",
+                              width: "38px",
+                              height: "38px",
+                              fontWeight: "bold",
+                              cursor: "pointer",
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                        <span>${(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeFromCart({
+                            variables: { userId, productId: item.productId },
+                          });
+                        }}
+                        style={{
+                          backgroundColor: "lightcoral",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                  <span>Price: ${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               </div>
             ))}

@@ -16,15 +16,15 @@ function App() {
       <main className="p-4">
         <Routes>
           <Route path="/" element={<ProductListPage userId={USER_ID} />} />
-          <Route path="/boys" element={<ProductListPage userId={USER_ID} category="Boys" />} />
-          <Route path="/girls" element={<ProductListPage userId={USER_ID} category="Girls" />} />
+          <Route path="/boys" element={<ProductListPage userId={USER_ID} categories={["Boys"]} />} />
+          <Route path="/girls" element={<ProductListPage userId={USER_ID} categories={["Girls"]} />} />
           <Route
             path="/gifts"
-            element={<ProductListPage userId={USER_ID} category="Gifts" />}
+            element={<ProductListPage userId={USER_ID} categories={["Gifts"]} />}
           />
           <Route
             path="/new-arrivals"
-            element={<ProductListPage userId={USER_ID} category="New Arrivals" />}
+            element={<ProductListPage userId={USER_ID} categories={["New Arrivals"]} />}
           />
           {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/cart" element={<Cart userId={USER_ID}/>} />

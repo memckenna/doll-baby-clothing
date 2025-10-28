@@ -3,36 +3,23 @@ import { ADD_TO_CART, GET_CART, GET_PRODUCTS } from "../graphql";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// const GET_PRODUCTS = gql`
-//   query Products($category: String) {
-//     products(category: $category) {
-//       id
-//       name
-//       description
-//       price
-//       category
-//       imageUrl
-//     }
-//   }
-// `;
-
 interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
-  category: string;
+  categories: Array<string>;
   imageUrl: string;
 }
 
 interface ProductPageProps {
-  category?: string;
+  categories?: Array<string>;
   userId?: string;
 }
 
-const ProductListPage = ({ category, userId }: ProductPageProps) => {
+const ProductListPage = ({ categories, userId }: ProductPageProps) => {
   const { data, loading, error } = useQuery(GET_PRODUCTS, {
-    variables: { category },
+    variables: { categories },
   });
 
   const [confirmation, setConfirmation] = useState<string | null>(null);

@@ -26,7 +26,8 @@ public class CartService {
         Cart cart = cartRepository.findByUserId(userId).orElse(new Cart());
         cart.setUserId(userId);
         List<CartItem> items = cart.getItems();
-        if (items == null) items = new ArrayList<>();
+        if (items == null)
+            items = new ArrayList<>();
 
         // Check if product is already in cart
         boolean found = false;
@@ -51,7 +52,8 @@ public class CartService {
                 .orElseThrow(() -> new IllegalArgumentException("Cart not found for user: " + userId));
 
         List<CartItem> items = cart.getItems();
-        if (items == null) items = new ArrayList<>();
+        if (items == null)
+            items = new ArrayList<>();
 
         items.removeIf(ci -> ci.getQuantity() <= 0); // safety cleanup
 
@@ -77,9 +79,14 @@ public class CartService {
                 .orElseThrow(() -> new IllegalArgumentException("Cart not found for user: " + userId));
 
         List<CartItem> items = cart.getItems();
-        if (items != null) {
-            items.removeIf(ci -> ci.getProductId().equals(productId));
-        }
+        // if (items != null) {
+        // items.removeIf(ci -> ci.getProductId().equals(productId));
+        // }
+
+        if (items == null || items.isEmpty())
+            return new ArrayList<>();
+
+        items.removeIf(item -> item.getProductId().equals(productId));
 
         cart.setItems(items);
         cartRepository.save(cart);
@@ -89,6 +96,5 @@ public class CartService {
     public void clearCart(String userId) {
         cartRepository.findByUserId(userId).ifPresent(cartRepository::delete);
     }
-
 
 }

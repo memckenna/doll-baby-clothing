@@ -4,7 +4,7 @@ type Product {
   description: String
   price: Float!
   imageUrl: String
-  category: String
+  categories: [String!]
   sizes: [String!]
 }
 
@@ -15,10 +15,12 @@ type CartItem {
 }
 
 type CartItemDetails {
+  id: ID!
+  userId: ID!
   productId: ID!
   name: String!
-  price: Float!
   imageUrl: String!
+  price: Float!
   quantity: Int!
   size: String
 }
@@ -33,7 +35,7 @@ type Order {
 }
 
 type Query {
-  products(search: String, category: String): [Product!]!
+  products(search: String, categories: [String]): [Product!]!
   product(id: ID!): Product
   orderHistory(userId: ID!): [Order!]!
   cart(userId: ID!): [CartItemDetails!]!
@@ -50,7 +52,7 @@ type Mutation {
     description: String
     price: Float!
     imageUrl: String
-    category: String!
+    categories: [String!]!
     sizes: [String!]
   ): Product!
   updateProduct(
@@ -59,7 +61,7 @@ type Mutation {
     description: String
     price: Float
     imageUrl: String
-    category: String
+    categories: [String!] 
     sizes: [String!]
   ): Product!
   deleteProduct(id: ID!): Boolean!

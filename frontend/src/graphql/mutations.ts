@@ -22,7 +22,14 @@ export const UPDATE_CART_ITEM = gql`
 
 export const REMOVE_FROM_CART = gql`
   mutation RemoveFromCart($userId: ID!, $productId: ID!) {
-    removeFromCart(userId: $userId, productId: $productId)
+    removeFromCart(userId: $userId, productId: $productId) {
+      productId
+      name
+      imageUrl
+      price
+      quantity
+      size
+    }
   }
 `;
 

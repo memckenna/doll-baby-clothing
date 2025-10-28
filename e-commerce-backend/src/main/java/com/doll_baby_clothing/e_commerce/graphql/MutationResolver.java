@@ -144,7 +144,7 @@ public class MutationResolver {
             @Argument String description,
             @Argument double price,
             @Argument String imageUrl,
-            @Argument String category,
+            @Argument List<String> categories,
             @Argument List<String> sizes
             ) {
 
@@ -153,7 +153,7 @@ public class MutationResolver {
         product.setDescription(description);
         product.setPrice(price);
         product.setImageUrl(imageUrl);
-        product.setCategory(category);
+        product.setCategories(categories);
         product.setSizes(sizes);
 
         return productRepo.save(product);
@@ -166,7 +166,7 @@ public class MutationResolver {
             @Argument String description,
             @Argument Double price,
             @Argument String imageUrl,
-            @Argument String category,
+            @Argument List<String> categories,
             @Argument List<String> sizes) {
 
         Product product = productRepo.findById(id)
@@ -180,8 +180,8 @@ public class MutationResolver {
             product.setPrice(price);
         if (imageUrl != null)
             product.setImageUrl(imageUrl);
-        if (category != null)
-            product.setCategory(category);
+        if (categories != null)
+            product.setCategories(categories);
         if (sizes != null) product.setSizes(sizes);
 
         return productRepo.save(product);
