@@ -86,7 +86,7 @@ const ProductListPage = ({ categories, userId }: ProductPageProps) => {
                 alt={product.name}
                 style={{ width: "200px", height: "300px", objectFit: "contain" }}
               />
-              <h2 style={{ fontWeight: "bold", marginBottom: "1px", alignSelf: "center" }}>
+              <h2 style={{ fontWeight: "bold", marginBottom: "1px", alignSelf: "center", fontSize: '20px' }}>
                 {product.name}
               </h2>
               {/* <p style={{ marginBottom: "1px" }}>{product.description}</p> */}

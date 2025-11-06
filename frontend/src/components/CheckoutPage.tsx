@@ -62,7 +62,7 @@ const CheckoutPage: React.FC = () => {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: '10px' }}>
               <span>{item.name}</span>
-              <span>Size: </span>
+              <span>Size: {item.size}</span>
               <span>Quantity: {item.quantity}</span>
               <span>${item.price * item.quantity}</span>
             </div>

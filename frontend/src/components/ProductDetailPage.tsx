@@ -123,7 +123,13 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           >
             ${product.price}
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-between', paddingBottom: '12px'}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingBottom: "12px",
+            }}
+          >
             <div style={{ marginTop: "5px" }}>
               <label style={{ fontWeight: "bold" }}>Size: </label>
               <select
@@ -194,6 +200,51 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
             </div>
           </div>
           <button
+            disabled={quantity <= 0 || !selectedSize}
+            style={{
+              backgroundColor:
+                quantity <= 0 || !selectedSize ? "#ccc" : "lightblue",
+              color: "white",
+              padding: "12px 24px",
+              border: "none",
+              borderRadius: "8px",
+              cursor:
+                quantity <= 0 || !selectedSize ? "not-allowed" : "pointer",
+              fontSize: "16px",
+              fontWeight: "bold",
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            }}
+            onMouseEnter={(e) => {
+              if (quantity > 0 && selectedSize) {
+                e.currentTarget.style.backgroundColor =
+                  "rgba(26, 156, 243, 0.1)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (quantity > 0 && selectedSize) {
+                e.currentTarget.style.backgroundColor = "lightblue";
+              }
+            }}
+            onClick={() => {
+              if (quantity > 0 && selectedSize) {
+                addToCart({
+                  variables: {
+                    userId,
+                    productId: product.id,
+                    quantity,
+                    size: selectedSize,
+                  },
+                });
+              } else {
+                setConfirmation("Please select a size and quantity above 0.");
+                setTimeout(() => setConfirmation(null), 2000);
+              }
+            }}
+          >
+            Add To Cart
+          </button>
+          {/* <button
             style={{
               backgroundColor: "lightblue",
               color: "white",
@@ -225,7 +276,7 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
             }
           >
             Add To Cart
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

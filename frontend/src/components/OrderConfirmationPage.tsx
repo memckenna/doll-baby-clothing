@@ -31,30 +31,38 @@ const OrderConfirmationPage: React.FC = () => {
             key={item.productId}
             style={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              // justifyContent: "center",
               alignItems: "center",
               border: "1px solid #ccc",
               borderRadius: "8px",
-              width: "400px",
-              height: "250px",
+              width: "500px",
+              height: "150px",
               gap: "5px",
             }}
           >
-            <span style={{ display: "flex", flexDirection: "row" }}>
-              <div style={{paddingRight: '8px'}}>Order Number: </div>
-              <div>{item.productId}</div>
-            </span>
-            <span style={{ display: "flex", flexDirection: "row" }}>
-              <div style={{paddingRight: '8px'}}>Quanity: </div>
-              <div>{item.quantity}</div>
-            </span>
-            <span>${item.quantity * 20}</span>{" "}
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              style={{ width: "100px", height: "auto" }}
-            />
+            <div>
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                style={{ width: "100px", height: "auto", paddingLeft: '20px' }}
+              />
+            </div>
+            <div style={{paddingLeft: '30px'}}>
+              <span style={{ display: "flex", flexDirection: "row" }}>
+                <div style={{paddingRight: '8px'}}>Order Number: </div>
+                <div>{item.productId}</div>
+              </span>
+              <span style={{ display: "flex", flexDirection: "row" }}>
+                <div style={{paddingRight: '8px'}}>Quanity: </div>
+                <div>{item.quantity}</div>
+              </span>
+              <span style={{ display: "flex", flexDirection: "row" }}>
+                <div style={{paddingRight: '8px'}}>Size: </div>
+                <div>{item.size}</div>
+              </span>
+              <span>${item.quantity * 20}</span>{" "}
+
+            </div>
             {/* replace with real price if needed */}
           </div>
         ))}
