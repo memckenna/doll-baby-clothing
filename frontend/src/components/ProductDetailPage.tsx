@@ -17,8 +17,6 @@ interface ProductDetailsPageProps {
   userId: string;
 }
 
-// const sizeOptions = ["Newborn", "0–3M", "3–6M", "6–12M", "12–18M", "2T", "3T", "4T", "5T"];
-
 const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
   const { id } = useParams<{ id: string }>();
   const { data, loading, error } = useQuery(GET_PRODUCT, { variables: { id } });
