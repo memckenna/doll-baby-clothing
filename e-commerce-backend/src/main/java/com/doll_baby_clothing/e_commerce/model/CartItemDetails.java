@@ -1,7 +1,5 @@
 package com.doll_baby_clothing.e_commerce.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
