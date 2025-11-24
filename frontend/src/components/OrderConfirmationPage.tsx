@@ -63,7 +63,6 @@ const OrderConfirmationPage: React.FC = () => {
               <span>${item.quantity * 20}</span>{" "}
 
             </div>
-            {/* replace with real price if needed */}
           </div>
         ))}
       </div>

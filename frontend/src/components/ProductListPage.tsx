@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from "@apollo/client";
-import { ADD_TO_CART, GET_CART, GET_PRODUCTS } from "../graphql";
+import { useQuery } from "@apollo/client";
+import { GET_PRODUCTS } from "../graphql";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
