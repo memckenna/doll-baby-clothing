@@ -95,8 +95,6 @@ const Cart: React.FC<CartProps> = ({ userId }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   borderTop: "1px solid #ccc",
-                  // borderBottom: "1px solid #ccc",
-                  // borderRadius: "8px",
                   width: "800px",
                   height: "250px",
                   gap: "5px",

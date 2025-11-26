@@ -1,6 +1,6 @@
 import React from "react";
 
-import Cart from "./Cart"; // your Cart component
+import Cart from "./Cart";
 
 const CartPage: React.FC = () => {
   const userId = "user1"; // Replace with logged-in user ID from context/auth
