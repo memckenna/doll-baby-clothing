@@ -242,39 +242,6 @@ const ProductDetailPage: React.FC<ProductDetailsPageProps> = ({ userId }) => {
           >
             Add To Cart
           </button>
-          {/* <button
-            style={{
-              backgroundColor: "lightblue",
-              color: "white",
-              padding: "12px 24px",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: "bold",
-              transition: "all 0.3s ease",
-              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor =
-                "rgba(26, 156, 243, 0.1)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "lightblue")
-            }
-            onClick={() =>
-              addToCart({
-                variables: {
-                  userId,
-                  productId: product.id,
-                  quantity,
-                  size: selectedSize,
-                },
-              })
-            }
-          >
-            Add To Cart
-          </button> */}
         </div>
       </div>
     </div>
